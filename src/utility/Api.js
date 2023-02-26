@@ -17,6 +17,15 @@ class Api {
 		}).then(onResponce);
 	}
 
+	getProductById(idProduct) {
+		return fetch(`${this._baseUrl}/products/${idProduct}`, {
+			headers: {
+				authorization: this._token,
+				'Content-type': 'application/json'
+			},
+		}).then(onResponce);
+	}
+
 	getUserInfo() {
 		return fetch(`${this._baseUrl}/users/me`, {
 			headers: {
@@ -27,11 +36,6 @@ class Api {
 	}
 	
 	search(searchQuery){
-
-		if (!searchQuery) {
-			return this.getProductList();
-		}
-		
         return fetch(
 			`${this._baseUrl}/products/search?query=${searchQuery}`, {
             headers: {
@@ -40,6 +44,7 @@ class Api {
             },
         }).then(onResponce)
     }
+	
 	changeLikeProductStatus(productId, isLike) {
 		return fetch(`${this._baseUrl}/products/likes/${productId}`, {
 			method: isLike ? "DELETE" : "PUT",
