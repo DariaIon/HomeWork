@@ -9,13 +9,16 @@ import { FavoritePage } from '../../pages/FavoritePage/favoritePage';
 import api  from '../../utility/Api';  
 import useDebounce from '../../hooks/useDebounce';
 import { isLiked }  from '../../utility/productliked';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { CurrentUserContext }  from "../../context/currentUserContext";
 import { CatalogPage }  from '../../pages/CatalogPage';
 import  ProductPage     from '../../pages/ProductPage';
 import { NotFound }   from '../../pages/notFound/NotFound';
 import { CardContext } from '../../context/cardContext';
 import { SortContext } from '../../context/sortContext';
+import Modal from '../Modal/modal';
+import { Login } from '../Login/login';
+import { Register } from '../Register/register';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -25,9 +28,14 @@ function App() {
   const debounceValue = useDebounce(searchQuery, 500);
   const [favorites, setFavorites] = useState([]);
   const [selectedTabId, setSelectedTabId] = useState("cheap");
-  const navigate = useNavigate()
 
 
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+  const initialPath = location.state?.initialPath;
+
+
+  const navigate = useNavigate();
   const handleRequest = useCallback(() => {
     setIsLoading(true);
     api.search(searchQuery)
@@ -120,8 +128,7 @@ function App() {
       </Header>
       <main className='content container'>
       <SeachInfo searchText={searchQuery}/>
-
-      <Routes>
+      <Routes location={(backgroundLocation && {...backgroundLocation, pathname: initialPath}) || location}>
         <Route index element={
           <CatalogPage />
         } />
@@ -136,7 +143,24 @@ function App() {
             />
 
         <Route path="*" element={<NotFound/>}/>  
-      </Routes>     
+      </Routes> 
+      {backgroundLocation && (
+        <Routes>
+          <Route path='/login' element={
+            <Modal>
+              <Login />
+            </Modal>
+          } />
+
+          <Route path='/register' element={
+            <Modal>
+              <Register />
+            </Modal>
+          } />
+        </Routes>
+      )
+
+      }    
        </main>
       <Footer/>
         </CardContext.Provider>

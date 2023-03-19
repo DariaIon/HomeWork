@@ -11,10 +11,7 @@ import { CardContext } from "../context/cardContext";
    const { productId } = useParams();
    const { handleLike } = useContext(CardContext);
 
-   const handleGetProduct = useCallback(
-     () => api.getProductById(productId),
-     [productId]
-   );
+   const handleGetProduct = useCallback(() => api.getProductById(productId), [productId]);
 
    const {
      data: product,

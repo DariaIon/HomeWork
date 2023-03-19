@@ -34,6 +34,27 @@ class Api {
 			},
 		}).then(onResponce);
 	}
+
+	setUserInfo(dataUser) {
+		return fetch(`${this._baseUrl}/users/me`, {
+			method: 'PATCH',
+			headers: {
+				authorization: this._token,
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(dataUser)
+		}).then(onResponce);
+	}
+	createReviewProduct(productId, reviewData) {
+		return fetch(`${this._baseUrl}/products/review/${productId}`, {
+			method: 'POST',
+			headers: {
+				authorization: this._token,
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(reviewData)
+		}).then(onResponce);
+	}
 	
 	search(searchQuery){
         return fetch(

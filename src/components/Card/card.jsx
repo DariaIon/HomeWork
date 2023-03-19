@@ -15,7 +15,7 @@ import ContentLoader from 'react-content-loader';
 		const {user: currentUser, isLoading} = useContext(CurrentUserContext);
 		const {handleLike: onProductLike} = useContext(CardContext);	
 		const discount_price = calcDiscountPrice(price, discount);
-		const liked = isLiked(likes, currentUser._id);
+		const liked = isLiked(likes, currentUser?._id);
 
 	function handleLikeClick() {
 		onProductLike({_id, likes});

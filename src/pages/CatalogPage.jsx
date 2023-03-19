@@ -25,13 +25,13 @@ export const CatalogPage = () => {
   const { cards } = useContext(CardContext);
   const { selectedTabId, setSelectedTabId } = useContext(SortContext);
   return (
-    <>
+    <div className="container container_inner">
       <Sort tabs={tabs}
         currentSort={selectedTabId}
         onChangeSort={(tabid) => { setSelectedTabId(tabid) }} />
       <div className="content__cards">
         <CardList cards={cards} />
       </div>
-    </>
+    </div>
   );
 };

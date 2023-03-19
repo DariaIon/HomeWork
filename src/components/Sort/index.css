@@ -13,6 +13,9 @@
 	font-size: 14px;
 	line-height: 20px;
 	color: #7B8E98;
+	cursor: pointer;
+	transition: 0.2s;
+
 }
 
 .sort__link_selected {

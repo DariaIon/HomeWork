@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import s from "./index.modules.css";
+import s from "./index.module.css";
 
 export const ContentHeader = ({ title, children }) => {
   const navigate = useNavigate();

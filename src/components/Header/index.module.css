@@ -53,6 +53,10 @@
 	left: 70%;
 }
 
+.authorization {
+	margin-left: 20px;
+}
+
 @media (max-width: 700px) {
 	.header__wrapper {
 		flex-direction: column;

@@ -1,26 +1,26 @@
-import React, { useContext } from "react";
-import s from "./style.modules.css";
+import s from "./style.module.css";
 import cn from "classnames";
 import truck from "./img/truck.svg";
 import quality from "./img/quality.svg";
 import {ReactComponent as Save} from "./img/save.svg";
-
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useMemo } from "react";
 import { isLiked } from "../../utility/productliked";
 import { calcDiscountPrice } from "../../utility/productdiscount";
 import { CurrentUserContext } from "./../../context/currentUserContext";
 import { ContentHeader } from "../HeaderContent/content-header";
 import { createMarkup } from "../../utility/createMarkup";
+import { Rating } from "../Rating/rating";
+import { FormReview } from "../FormReview/form-review";
 
 
 
-const Product = ({_id, onProductLike, description, discount, likes = [], name, pictures, price}) => {
+const Product = ({ _id, onProductLike, description, discount, likes = [], name, pictures, price, reviews, setProduct }) => {
     const {user: currentUser} = useContext(CurrentUserContext);
-    
-    const navigate = useNavigate();
     const discountPrice = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description);
+
+    const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, r) => acc = acc + r.rating, 0)/reviews.length), [reviews]);
 
     function handleLikeClick() {
         onProductLike({_id, likes});
@@ -31,6 +31,7 @@ const Product = ({_id, onProductLike, description, discount, likes = [], name, p
          <ContentHeader title={name}>
             <div>
                 <span>Артикул:</span> <b>2388907</b>
+                <Rating rating={ratingCount} /> {reviews.length} отзывов
             </div>
          </ContentHeader>
           <div className={s.product}>
@@ -50,7 +51,7 @@ const Product = ({_id, onProductLike, description, discount, likes = [], name, p
                         В корзину
                     </a>
                 </div>
-                <button className={cn(s.favorite, {[s.favoriteActive]: isLike})} onClick={handleLikeClick}>
+                <button className={cn(s.favorite, {[s.favoriteActive]: isLike})} onClick={onProductLike}>
                     <Save/>
                     <span>{isLike ? 'В избранном': 'В избранное'}</span>
                 </button>
@@ -106,6 +107,10 @@ const Product = ({_id, onProductLike, description, discount, likes = [], name, p
                 </div>
             </div>
         </div>
+        <ul>
+            {reviews.map(reviewData => <li key={reviewData._id}>{reviewData.text} <Rating rating={reviewData.rating} /></li>)}
+        </ul>
+        <FormReview title={`Отзыв о товаре ${name}`} productId={_id} setProduct={setProduct} />
     </>
 );
 };

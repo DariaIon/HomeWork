@@ -1,6 +1,6 @@
 import React from "react";
 
-import s from "./styles.modules.css";
+import s from "./styles.module.css";
 import { Link } from "react-router-dom";
 import  notFound from "./img/notfound.svg";
 
